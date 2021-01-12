@@ -33,12 +33,12 @@ if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/routerTest')
   app.use('/api/testing', testingRouter)
 }
-app.use(express.static(path.resolve(__dirname, 'build')))
+app.use(express.static('backend/build'))
 
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function(request, response) {
-  response.sendFile(path.resolve(__dirname, 'index.html'))
+  response.sendFile(path.resolve(__dirname, 'backend', 'build', 'index.html'))
 })
 app.use(middleware.errorHandler)
 
