@@ -1,10 +1,8 @@
-const http = require('http')
+const http = require('http') //eslint-disable-line
 const app = require('./app')
 const config = require('./utils/config')
 
-const server = http.createServer(app)
-
 const PORT = config.PORT
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${config.PORT}`)
 })
