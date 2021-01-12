@@ -6,19 +6,18 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const api = supertest(app)
 const bcrypt = require('bcrypt')
-const blog = require('../models/blog')
 
-let loggedInToken = '';
+let loggedInToken = ''
 beforeEach(async () => {
   await Blog.remove({})
-  
+
   const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
   const promiseArray = blogObjects.map(blog => blog.save())
   await Promise.all(promiseArray)
 
   await User.remove({})
-  const passwordHash = await bcrypt.hash('salasanainen', 10) 
-  const user = new User({ username: 'sepase', name: 'Otto Normalverbraucher', passwordHash})
+  const passwordHash = await bcrypt.hash('salasanainen', 10)
+  const user = new User({ username: 'sepase', name: 'Otto Normalverbraucher', passwordHash })
   await user.save()
   const newBlog = {
     title: 'delete this blog',
@@ -27,19 +26,19 @@ beforeEach(async () => {
     likes: '22'
   }
   const response = await api
-  .post('/api/login')
-  .send({
-    username: 'sepase',
-    password: 'salasanainen'
-  })
+    .post('/api/login')
+    .send({
+      username: 'sepase',
+      password: 'salasanainen'
+    })
 
-  loggedInToken = response.body.token;
+  loggedInToken = response.body.token
 
   await api
-  .post('/api/blogs')
-  .set('Authorization', `bearer ${loggedInToken}`)      
-  .send(newBlog)
-  await Promise.all(promiseArray)      
+    .post('/api/blogs')
+    .set('Authorization', `bearer ${loggedInToken}`)
+    .send(newBlog)
+  await Promise.all(promiseArray)
 })
 
 
@@ -53,7 +52,7 @@ describe('blog format', () => {
 
   test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
-    
+
     expect(response.body.length).toBe(helper.initialBlogs.length +1)
   })
 
@@ -73,16 +72,16 @@ describe('addition of a blog', () => {
       url: 'www.thisisnew.com',
       likes: '13'
     }
-    
+
     await api
       .post('/api/blogs')
-      .set('Authorization', `bearer ${loggedInToken}`)      
+      .set('Authorization', `bearer ${loggedInToken}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-      
+
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 2)  
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 2)
 
     const blogTitles = blogsAtEnd.map(blog => blog.title)
     expect(blogTitles).toContain('This is new')
@@ -95,15 +94,15 @@ describe('addition of a blog', () => {
       url: 'www.thisisnew.com',
       likes: '13'
     }
-    
+
     await api
-      .post('/api/blogs')  
+      .post('/api/blogs')
       .send(newBlog)
       .expect(401)
       .expect('Content-Type', /application\/json/)
 
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)  
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
 
   })
 
@@ -115,14 +114,14 @@ describe('addition of a blog', () => {
       likes: ''
     }
     await api
-    .post('/api/blogs')
-    .set('Authorization', `bearer ${loggedInToken}`)      
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-    
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${loggedInToken}`)
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 2)  
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 2)
     const blogLikes = blogsAtEnd.filter(blog => blog.title === 'This is new')
     expect(blogLikes[0].likes).toBe(0)
   })
@@ -136,13 +135,13 @@ describe('addition of a blog', () => {
     }
 
     await api
-    .post('/api/blogs')
-    .set('Authorization', `bearer ${loggedInToken}`)      
-    .send(newBlog)
-    .expect(400)
-    
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${loggedInToken}`)
+      .send(newBlog)
+      .expect(400)
+
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)  
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
   })
 })
 
@@ -154,16 +153,15 @@ describe('deleting a blog', () => {
     console.log(toDelete.id)
     await api
       .delete(`/api/blogs/${toDelete.id}`)
-      .set('Authorization', `bearer ${loggedInToken}`)        
+      .set('Authorization', `bearer ${loggedInToken}`)
       .expect(204)
-    
+
     const blogsEnd = await helper.blogsInDb()
     console.log('täällä')
     expect(blogsEnd.length).toBe(helper.initialBlogs.length)
     const titles = blogsEnd.map(blog => blog.title )
     expect(titles).not.toContain(toDelete.title)
   })
-
 })
 
 describe('likes can be updated', () => {
@@ -172,17 +170,16 @@ describe('likes can be updated', () => {
     const blogToUpdate = blogsAtBegin[1]
     blogToUpdate.likes = 900
 
-    await api 
+    await api
       .put(`/api/blogs/${blogToUpdate.id}`)
       .send(blogToUpdate)
       .expect(200)
       .expect('Content-Type', /application\/json/)
-    
+
     const blogsAtEnd = await helper.blogsInDb()
     const updated = blogsAtEnd.filter(blog => blog.title === blogToUpdate.title)
-    expect(updated[0].likes).toBe(900) 
+    expect(updated[0].likes).toBe(900)
   })
-
 })
 
 describe('User related tests', () => {
@@ -196,10 +193,10 @@ describe('User related tests', () => {
     }
 
     await api
-     .post('/api/users')
-     .send(newUser)
-     .expect(200)
-     .expect('Content-Type', /application\/json/)
+      .post('/api/users')
+      .send(newUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
     const userAtEnd = await helper.usersInDb({})
     expect(userAtEnd.length).toBe(userAtStart.length + 1)
@@ -218,10 +215,10 @@ describe('User related tests', () => {
     const usersAtStart = await helper.usersInDb({})
 
     await api
-     .post('/api/users')
-     .send(newUser)
-     .expect(400)
-     .expect('Content-Type', /application\/json/)
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
 
     const usersAtEnd = await helper.usersInDb({})
 
@@ -234,45 +231,43 @@ describe('User related tests', () => {
       name: '',
       password: '3q3r',
     }
-  
+
     const usersAtStart = await helper.usersInDb({})
-  
+
     await api
-     .post('/api/users')
-     .send(newUser)
-     .expect(400)
-     .expect('Content-Type', /application\/json/)
-  
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
     const usersAtEnd = await helper.usersInDb({})
-  
+
     expect(usersAtEnd.length).toBe(usersAtStart.length)
-  
+
   })
 
   test('usename not unique, creation fails', async () => {
-    const newUser = { 
+    const newUser = {
       username: 'sepase',
-      name: 'Normalverbraucher', 
+      name: 'Normalverbraucher',
       password: 'salanainen'
     }
-  
+
     const usersAtStart = await helper.usersInDb({})
-  
+
     const result = await api
-     .post('/api/users')
-     .send(newUser)
-     .expect(400)
-     .expect('Content-Type', /application\/json/)
-  
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
     expect(result.body.error).toContain('`username` to be unique')
     const usersAtEnd = await helper.usersInDb({})
     expect(usersAtEnd.length).toBe(usersAtStart.length)
-  
+
   })
- 
+
 })
-
-
 
 afterAll(() => {
   mongoose.connection.close()

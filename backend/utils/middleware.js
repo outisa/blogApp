@@ -2,7 +2,7 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-const errorHandler = (error, request, response, next) => {
+const errorHandler = (error, request, response) => {
   console.log('Mikä vikana', error.message)
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
@@ -21,11 +21,11 @@ const tokenExtractor = (request, response, next) => {
     const token = authorization.substring(7)
     request.token = token
     next()
-    
+
   } else {
-   request.token = null
-   next()
-  } 
+    request.token = null
+    next()
+  }
 }
 
 module.exports = {

@@ -1,4 +1,4 @@
-const dummy = (blogs) => {
+const dummy = () => {
   return 1
 }
 
@@ -18,14 +18,14 @@ const favoriteBlog = (blogs) => {
     return biggest > blog.likes ? biggest :blog.likes
   })
   const blog = blogs.filter(blog => blog.likes === mostLikes)
-  const likedBlog = 
-    { 
-      title: blog[0].title, 
-      author: (blog[0].author), 
+  const likedBlog =
+    {
+      title: blog[0].title,
+      author: (blog[0].author),
       likes: (blog[0].likes),
     }
 
-  return likedBlog  
+  return likedBlog
 }
 function groupBy(array, property) {
   return array.reduce(function(acc, obj) {
@@ -39,9 +39,9 @@ function groupBy(array, property) {
 }
 const mostBlogs = (blogs) => {
   const authors = groupBy(blogs, 'author')
-  
+
   const authorList = []
-  for (x in authors) {
+  for (let x in authors) {
     const author = {
       author: (authors[x][0].author),
       blogs: authors[x].length,
@@ -58,11 +58,11 @@ const mostBlogs = (blogs) => {
 
 const mostLikesAuthor = (blogs) => {
   const authors = groupBy(blogs, 'author')
-  
+
   const authorList = []
-  for (x in authors) {
+  for (let x in authors) {
     let sum = 0
-    for (y in authors[x])  {
+    for (let y in authors[x])  {
       sum += authors[x][y].likes
     }
     const author = {
