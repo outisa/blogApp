@@ -29,19 +29,14 @@ app.use(middleware.tokenExtractor)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
-
+app.get('/health', (req, res) => {
+  res.send('OK!')
+})
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/routerTest')
   app.use('/api/testing', testingRouter)
 }
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
-app.get('*', (req, res) => {
-  res.sendFile(`${__dirname}/build/index.html`, (err) => {
-    if (err) {
-      res.status(500).send(err)
-    }
-  })
-})
 
 module.exports = app
