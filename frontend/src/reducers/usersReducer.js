@@ -18,7 +18,7 @@ export const createUser = (fullname, username, password) => {
         data: newUser
       })
    } catch (error) {
-      dispatch(setNotification(error.data, 5, 'error'))
+      dispatch(setNotification(error.response.data, 5, 'error'))
    }
   }
 }
@@ -26,9 +26,7 @@ export const createUser = (fullname, username, password) => {
 export const initializeUsers = () => {
   return async dispatch => {
     const users = await userService.getAll()
-    console.log(users)
     const sortedUsers = users.sort((a, b) => b.blogs.length - a.blogs.length)
-    console.log(sortedUsers)
     dispatch({
       type: 'INIT_USERS',
       data: sortedUsers

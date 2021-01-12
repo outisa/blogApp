@@ -10,7 +10,7 @@ export const initializeUser = id => {
         data: user
       })
     } catch (error) {
-      dispatch(setNotification(error.data, 5, 'error'))
+      dispatch(setNotification(error.response.data, 5, 'error'))
     }
   }
 }

@@ -21,8 +21,8 @@ export const login = (usernameLogin, passwordLogin) => {
         type: 'LOGGED_IN',
         data: user
       })
-    } catch (exception) {
-      console.log(exception)
+    } catch {
+
       dispatch(setNotification('Wrong username or password!', 5, 'error'))
     }
   }

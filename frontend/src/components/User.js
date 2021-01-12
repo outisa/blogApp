@@ -14,7 +14,7 @@ const User = () => {
   if (!user) {
     return null
   }
-  console.log(user.name)
+ 
   return(
     <div class='container'>
       <h3>{user.name}</h3>

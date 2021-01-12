@@ -24,7 +24,7 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true })
 
 app.use(cors())
 app.use(bodyParser.json())
-
+app.use(express.static('build'))
 app.use(middleware.tokenExtractor)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
@@ -36,5 +36,12 @@ if (process.env.NODE_ENV === 'test') {
 }
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
+app.get('*', (req, res) => {
+  res.sendFile(`${__dirname}/build/index.html`, (err) => {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 
 module.exports = app

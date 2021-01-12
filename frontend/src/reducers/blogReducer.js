@@ -10,7 +10,7 @@ export const initializeBlog = id => {
         data: blog
       })
     } catch (error) {
-      dispatch(setNotification(error.error, 5, 'error'))
+      dispatch(setNotification(error.response.data, 5, 'error'))
     }
   }
 }
@@ -28,8 +28,7 @@ export const addComment = (id, content) => {
         data: commentedBlog
       })
     } catch (error) {
-      console.log(error)
-      dispatch(setNotification(error.error, 5, 'error'))
+      dispatch(setNotification(error.response.data, 5, 'error'))
     }
   }
 }
