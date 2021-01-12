@@ -31,8 +31,8 @@ beforeEach(async () => {
   jest.setTimeout(10000)
 })
 describe('blog format', () => {
+  jest.setTimeout(10000)
   test('blog information is returned as json', async () => {
-    jest.setTimeout(10000)
     await api
       .get('/api/blogs')
       .expect(200)
