@@ -9,13 +9,13 @@ const bcrypt = require('bcrypt')
 
 let loggedInToken = ''
 beforeEach(async () => {
-  await Blog.remove({})
+  await Blog.deleteMany({})
 
   const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
   const promiseArray = blogObjects.map(blog => blog.save())
   await Promise.all(promiseArray)
 
-  await User.remove({})
+  await User.deleteMany({})
   const passwordHash = await bcrypt.hash('salasanainen', 10)
   const user = new User({ username: 'sepase', name: 'Otto Normalverbraucher', passwordHash })
   await user.save()
@@ -52,6 +52,7 @@ describe('blog format', () => {
 
   test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
+    console.log(response.body)
     expect(response.body.length).toBe(helper.initialBlogs.length +1)
   })
 
