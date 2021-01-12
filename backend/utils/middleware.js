@@ -1,8 +1,8 @@
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
-
-const errorHandler = (error, request, response) => {
+//eslint-disable-next-line
+const errorHandler = (error, request, response, next) => {
   console.log('Mikä vikana', error.message)
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {

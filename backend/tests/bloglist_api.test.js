@@ -126,7 +126,7 @@ describe('addition of a blog', () => {
     expect(blogLikes[0].likes).toBe(0)
   })
 
-  test('empty url on title or url, expect 400', async () => {
+  test('empty string on title or url, expect 400', async () => {
     const newBlog = {
       title: '',
       author: 'Mary Daniels',

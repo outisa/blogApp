@@ -15,15 +15,15 @@ blogsRouter.get('/:id', async (request, response) => {
     response.json(blog.toJSON())
   }
 })
-
-blogsRouter.get('/', async (request, response) => {
+//eslint-disable-next-line
+blogsRouter.get('/', async (request, response, next) => {
   const blogs = await Blog.find({})
     .populate('user', { username: 1, name: 1 })
     .populate('comments', { content: 1 })
   response.json(blogs.map(blog => blog.toJSON()))
 })
-
-blogsRouter.post('/:id/comments', async (request, response) => {
+//eslint-disable-next-line
+blogsRouter.post('/:id/comments', async (request, response, next) => {
   if (request.token !== null) {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
@@ -48,8 +48,8 @@ blogsRouter.post('/:id/comments', async (request, response) => {
   response.status(401).send({ error: 'not signed in' })
 
 })
-
-blogsRouter.post('/', async (request, response) => {
+//eslint-disable-next-line
+blogsRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
   if (request.token !== null) {
@@ -76,8 +76,8 @@ blogsRouter.post('/', async (request, response) => {
   response.status(401).send({ error: 'not signed in' })
 
 })
-
-blogsRouter.delete('/:id', async (request, response) => {
+//eslint-disable-next-line
+blogsRouter.delete('/:id', async (request, response, next) => {
 
   if(request.token !== null) {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
@@ -99,8 +99,8 @@ blogsRouter.delete('/:id', async (request, response) => {
   response.status(401).send({ error: 'not signed in' })
 
 })
-
-blogsRouter.put('/:id', async (request, response) => {
+//eslint-disable-next-line
+blogsRouter.put('/:id', async (request, response, next) => {
 
   const body = request.body
 
@@ -111,7 +111,6 @@ blogsRouter.put('/:id', async (request, response) => {
     title: body.title,
     body: body.url
   }
-
 
   const update = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
   const updatetBlog = await Blog.findOne({ _id: update._id }).populate('user', { username: 1, name: 1 })
