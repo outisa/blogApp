@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { 
+import {
   Switch, Route, Link,
-  Redirect, useHistory, 
+  Redirect, useHistory,
 } from 'react-router-dom'
 import { Navbar, Nav, Button } from 'react-bootstrap'
 import LoginForm from './components/LoginForm'
@@ -15,7 +15,7 @@ import User from './components/User'
 import Togglable from './components/Togglable'
 import { useField } from './hooks'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs, createBlog} from './reducers/blogsReducer'
+import { initializeBlogs, createBlog } from './reducers/blogsReducer'
 import { logout, login, checkAuthentication } from './reducers/loginReducer'
 import { initializeUsers, createUser } from './reducers/usersReducer'
 
@@ -44,13 +44,13 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeUsers())
   }, [dispatch])
- 
+
 
   const handleLogin = (event) => {
     event.preventDefault()
     dispatch(login(usernameLogin, passwordLogin))
   }
-  
+
   const handleLogout = (event) => {
     event.preventDefault()
     history.push('/login')
@@ -74,13 +74,13 @@ const App = () => {
 
   const createUserForm = () => (
     <Togglable buttonLabel="sign up">
-    <CreateUserForm
-      create={create}
-      fullname={fullname}
-      username= {username}
-      password={password}
-    />
-  </Togglable> 
+      <CreateUserForm
+        create={create}
+        fullname={fullname}
+        username= {username}
+        password={password}
+      />
+    </Togglable>
   )
   const blogForRef = React.createRef()
   const createBlogForm = () => (
@@ -88,7 +88,7 @@ const App = () => {
       <CreateBlogForm
         handleAddBlog={handleAddBlog}
         title={title}
-        author={author}          
+        author={author}
         url={url}
       />
     </Togglable>
@@ -107,81 +107,79 @@ const App = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="#" as="span">
-            {loggedIn
+              {loggedIn
                 ?  <Link to="/blogs">blogs</Link>
                 : null
               }
             </Nav.Link>
             <Nav.Link href="#" as="span">
-            {loggedIn
+              {loggedIn
                 ? <Link to="/users">users</Link>
                 :  null
               }
-            
             </Nav.Link>
             <Nav.Link href="#" as="span">
               {loggedIn
                 ? <em><p>{loggedIn.name} logged in</p></em>
                 : <Link to="/login">login</Link>
               }
-          </Nav.Link>
-          <Nav.Link href="#" as="span">
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
               {loggedIn
                 ? null
                 : <Link to="/signup">sign up</Link>
               }
-          </Nav.Link>
-          <Nav.Item>
-          {loggedIn
+            </Nav.Link>
+            <Nav.Item>
+              {loggedIn
                 ? <Button type='submit'  onClick={handleLogout} id='logout-button'>logout</Button>
                 : null
               }
-          </Nav.Item>
+            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-            <Notification />
-          
-        {loggedIn === null ?
-          <div>
-            <Switch>
+      <Notification />
+      {loggedIn === null ?
+        <div>
+          <Switch>
             <Route path='/login'>
               {loggedIn ?
                 <Redirect to="/users" />:
-                <div> 
+                <div>
                   {loginForm()}
-                </div> 
-                }
-              </Route>
-              <Route path='/signup'>
-                <div> 
-                  {createUserForm()}
-                </div> 
-              </Route>
-            </Switch>
-          </div>   :
-          <div >
-            <h1>Blog app</h1>
-            <Switch>
-              <Route path='/users/:id' >
-                <User />
-              </Route>
-              <Route path='/blogs/:id'>
-                <Blog loggedIn={loggedIn} />
-              </Route>
-              <Route path='/users'>
-                <Users />
-              </Route>
-              <Route path='/blogs'>
-                <div >
-                  <h2>Add new blog</h2>
-                  {createBlogForm()}
-                  <Blogs />
                 </div>
-              </Route>
-            </Switch>
-          </div> 
-        }
+              }
+            </Route>
+            <Route path='/signup'>
+              <div>
+                {createUserForm()}
+              </div>
+            </Route>
+          </Switch>
+        </div>   :
+        <div >
+          <h1>Blog app</h1>
+          <Switch>
+            <Route path='/users/:id' >
+              <User />
+            </Route>
+            <Route path='/blogs/:id'>
+              <Blog loggedIn={loggedIn} />
+            </Route>
+            <Route path='/users'>
+              <Users />
+            </Route>
+            <Route path='/blogs'>
+              <div >
+                <h2>Add new blog</h2>
+                {createBlogForm()}
+                <Blogs />
+              </div>
+            </Route>
+          </Switch>
+        </div>
+      }
     </div>
   )
 }

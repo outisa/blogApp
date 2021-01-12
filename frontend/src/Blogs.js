@@ -17,8 +17,8 @@ const Blogs = () => {
           <Link to={`/blogs/${blog.id}`}>{blog.title}, by {blog.author}</Link>
         </div>
       )}
-    </div>  
-  )     
+    </div>
+  )
 }
 
 export default Blogs

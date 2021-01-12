@@ -14,25 +14,25 @@ const User = () => {
   if (!user) {
     return null
   }
- 
+
   return(
-    <div class='container'>
+    <div className='container'>
       <h3>{user.name}</h3>
       <h2>Added blogs</h2>
       {user.blogs.length === 0 ?
-      <div>
-        <p>no added blogs</p>
-      </div>:
-      <div>
-        <ul>
-          {user.blogs.map(blog =>
-            <li key={blog.id}>
-              {blog.title}
-            </li>
-          )}
-        </ul>
-      </div>}
-
+        <div>
+          <p>no added blogs</p>
+        </div>:
+        <div>
+          <ul>
+            {user.blogs.map(blog =>
+              <li key={blog.id}>
+                {blog.title}
+              </li>
+            )}
+          </ul>
+        </div>
+      }
     </div>
   )
 }

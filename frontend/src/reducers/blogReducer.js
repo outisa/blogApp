@@ -35,12 +35,12 @@ export const addComment = (id, content) => {
 
 const blogReducer = (state=null, action) => {
   switch (action.type) {
-    case 'WANTED_BLOG':
-      return action.data
-    case 'COMMENTED_BLOG':
-      return action.data      
-    default: 
-      return state
+  case 'WANTED_BLOG':
+    return action.data
+  case 'COMMENTED_BLOG':
+    return action.data
+  default:
+    return state
   }
 }
 

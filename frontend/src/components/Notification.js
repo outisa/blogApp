@@ -14,16 +14,16 @@ const Notification = () => {
   if (notification.message === 'error') {
     return (
       showNotification() ? null :
-      <div className="error">
-        {notification.notification}
-      </div>
+        <div className="error">
+          {notification.notification}
+        </div>
     )
   } else if (notification.message === 'message') {
     return (
       showNotification() ? null :
-      <div className="added">
-        {notification.notification}
-      </div>
+        <div className="added">
+          {notification.notification}
+        </div>
     )
   }
   return null

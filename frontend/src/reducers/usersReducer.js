@@ -17,9 +17,9 @@ export const createUser = (fullname, username, password) => {
         type: 'NEW_USER',
         data: newUser
       })
-   } catch (error) {
+    } catch (error) {
       dispatch(setNotification(error.response.data, 5, 'error'))
-   }
+    }
   }
 }
 
@@ -35,12 +35,12 @@ export const initializeUsers = () => {
 }
 const usersReducer = (state=[], action) => {
   switch (action.type) {
-    case 'NEW_USER':
-      return [...state, action.data]
-    case 'INIT_USERS':
-      return action.data
-    default:
-      return state
+  case 'NEW_USER':
+    return [...state, action.data]
+  case 'INIT_USERS':
+    return action.data
+  default:
+    return state
   }
 }
 

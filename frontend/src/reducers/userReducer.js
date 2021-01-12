@@ -17,10 +17,10 @@ export const initializeUser = id => {
 
 const userReducer = (state=null, action) => {
   switch (action.type) {
-    case 'WANTED_USER':
-      return action.data
-    default: 
-      return state
+  case 'WANTED_USER':
+    return action.data
+  default:
+    return state
   }
 }
 

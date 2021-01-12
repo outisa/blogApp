@@ -2,7 +2,7 @@ import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { setNotification } from './notificationReducer'
 
-export const login = (usernameLogin, passwordLogin) => {
+export const login = (usernameLogin, passwordLogin) => {
   return async dispatch => {
     const username = usernameLogin.value
     const password = passwordLogin.value
@@ -16,13 +16,12 @@ export const login = (usernameLogin, passwordLogin) => {
       usernameLogin.reset()
       passwordLogin.reset()
       blogService.setToken(user.token)
-      
+
       dispatch({
         type: 'LOGGED_IN',
         data: user
       })
-    } catch {
-
+    } catch (e) {
       dispatch(setNotification('Wrong username or password!', 5, 'error'))
     }
   }
@@ -54,14 +53,14 @@ export const checkAuthentication = () => {
 
 const authentication = (state = null, action) => {
   switch (action.type) {
-    case 'LOGGED_IN':
-      return  action.data
-    case 'FAILURE' :
-      return action.data
-    case 'LOGGED_OUT':
-      return action.data
-    default:
-      return state   
+  case 'LOGGED_IN':
+    return  action.data
+  case 'FAILURE' :
+    return action.data
+  case 'LOGGED_OUT':
+    return action.data
+  default:
+    return state
   }
 }
 

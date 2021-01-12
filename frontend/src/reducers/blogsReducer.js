@@ -41,7 +41,7 @@ export const initializeBlogs = () => {
 }
 
 export const like = (blogs, blog) => {
-  const newBlog = { ...blog, user: blog.user.id, likes: blog.likes +1}
+  const newBlog = { ...blog, user: blog.user.id, likes: blog.likes +1 }
   return async dispatch => {
     const updatetBlog = await blogService.update(blog.id, newBlog)
     const updatetBlogs = blogs.map(b => b.id !== updatetBlog.id ? b : updatetBlog)
@@ -55,8 +55,8 @@ export const like = (blogs, blog) => {
 }
 
 export const remove = (blogs, blog) => {
-   return async dispatch => {
-      try {
+  return async dispatch => {
+    try {
       await blogService.deleteBlog(blog.id)
       const blogList = blogs.filter(b => b.id !== blog.id)
       blogList.sort((a, b) => b.likes -a.likes)
@@ -68,21 +68,21 @@ export const remove = (blogs, blog) => {
       console.log(exception)
       dispatch(setNotification('Blog is already removed or you are not allowed to remove this blog', 5, 'error'))
     }
-   }
+  }
 }
 const blogReducer = (state=[], action) => {
   switch (action.type) {
-    case 'NEW_BLOG':
-      return [...state, action.data]
-    case 'INIT_BLOGS':
-      return action.data
-    case 'UPDATE_BLOG':
-      return action.data
-    case 'REMOVE_BLOG':
-       return action.data
-    default:
-      return state
-  }    
+  case 'NEW_BLOG':
+    return [...state, action.data]
+  case 'INIT_BLOGS':
+    return action.data
+  case 'UPDATE_BLOG':
+    return action.data
+  case 'REMOVE_BLOG':
+    return action.data
+  default:
+    return state
+  }
 }
 
 export default blogReducer

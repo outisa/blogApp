@@ -14,7 +14,7 @@ const Blog = ({ loggedIn }) => {
   const blog = useSelector(state => state.blog)
   const blogs = useSelector(state => state.blogs)
   const content = useField('')
- 
+
   useEffect(() => {
     dispatch(initializeBlog(id))
   },[dispatch, id])
@@ -31,14 +31,13 @@ const Blog = ({ loggedIn }) => {
       dispatch(remove(blogs, blog))
       dispatch(setNotification(`"${blog.title}" has been removed successfully`, 5, 'message'))
       history.push('/blogs')
-   }
+    }
   }
 
   const handleAdd = (event) => {
     event.preventDefault()
     dispatch(addComment(id, content))
   }
-
 
   if (blog === null) {
     return null
@@ -66,17 +65,17 @@ const Blog = ({ loggedIn }) => {
           <input {...content} reset='' />
           <Button variant='info' type="submit" onClick={handleAdd}>add comment</Button>
         </div>
-        {blog.comments.length === 0 ? 
-        <div>
-          <p>no comments yet</p>
-        </div>:
-        <div>
-          <ul>
-            {blog.comments.map(comment =>
-              <li key={comment.id}>{comment.content}</li>
-            )}
-          </ul>
-        </div> 
+        {blog.comments.length === 0 ?
+          <div>
+            <p>no comments yet</p>
+          </div>:
+          <div>
+            <ul>
+              {blog.comments.map(comment =>
+                <li key={comment.id}>{comment.content}</li>
+              )}
+            </ul>
+          </div>
         }
       </div>
     </div>

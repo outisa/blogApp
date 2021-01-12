@@ -14,7 +14,7 @@ import userReducer from './reducers/userReducer'
 import blogReducer from './reducers/blogReducer'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-const reducer = combineReducers({ 
+const reducer = combineReducers({
   notification: notificationReducer,
   blogs: blogsReducer,
   loggedIn: loginReducer,

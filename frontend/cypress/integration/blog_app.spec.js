@@ -41,7 +41,7 @@ describe('Blog app', function() {
       cy.get('#login-button').click()
 
       cy.get('.error').should('contain', 'Wrong username or password')
-      .and('have.css', 'color', 'rgb(255, 0, 0)')
+        .and('have.css', 'color', 'rgb(255, 0, 0)')
     })
   })
 
@@ -51,7 +51,7 @@ describe('Blog app', function() {
       cy.visit('http://localhost:3000/blogs')
     })
 
-    it('A blog can be created', function() {
+    it('A blog can be created', () =>  {
       cy.contains('Add a new Blog').click()
       cy.get('#title').type('New Blog')
       cy.get('#author').type('Outi S.')
@@ -61,87 +61,84 @@ describe('Blog app', function() {
       cy.contains('New Blog, by Outi S.')
     })
 
-    it('A blog can be liked', function() {
+    it('A blog can be liked', () =>  {
       cy.contains('Add a new Blog').click()
       cy.get('#title').type('New Blog')
       cy.get('#author').type('Outi S.')
       cy.get('#url').type('http://www.example.com')
       cy.get('#add-button').click()
-   
+
       cy.contains('New Blog, by Outi S.').click()
       cy.get('#blogTable').should('contain', 'likes: 0')
 
       cy.get('#like-button').click()
-      cy.get('#blogTable').should('contain', 'likes: 1')      
+      cy.get('#blogTable').should('contain', 'likes: 1')
     })
 
-    it('Blog can be removed', function() {
+    it('Blog can be removed', () => {
       cy.contains('Add a new Blog').click()
-      cy.createBlog({ 
+      cy.createBlog({
         title: 'New Blog',
         author: 'Outi S.',
-        url: 'http://www.example.com' 
+        url: 'http://www.example.com'
       })
       cy.contains('New Blog, by Outi S.').click()
       cy.get('#remove-button').click()
-      
+
       cy.get('#blogs').should('not.contain', 'New Blog')
     })
 
-    it('Blog can be removed only by its creator', function() {
+    it('Blog can be removed only by its creator', () =>  {
       cy.contains('Add a new Blog').click()
-      cy.createBlog({ 
+      cy.createBlog({
         title: 'New Blog',
         author: 'Outi S.',
-        url: 'http://www.example.com' 
+        url: 'http://www.example.com'
       })
-      cy.contains('New Blog, by Outi S.').click()    
+      cy.contains('New Blog, by Outi S.').click()
       cy.get('#blogTable').should('contain','New Blog')
-      cy.get('#remove-button').should('exist')   
-      
+      cy.get('#remove-button').should('exist')
+
       cy.get('#logout-button').click()
       cy.login({ username: 'maijame', password: 'salaisempi' })
-     
-      cy.contains('New Blog, by Outi S.').click()  
+
+      cy.contains('New Blog, by Outi S.').click()
       cy.contains('New Blog').parent().find('#remove-button')
-        .should('not.exist')         
-
+        .should('not.exist')
     })
-
   })
 
-  describe('List is shown correctly', function(){
+  describe('List is shown correctly', () => {
     beforeEach(function() {
-      cy.login({ username: 'mattime', password: 'tosiSalainen' })      
+      cy.login({ username: 'mattime', password: 'tosiSalainen' })
       cy.createBlog({
         title: 'First blog',
         author: 'The Creator',
         url: 'http://www.example.com',
-        likes: 23       
+        likes: 23
       })
       cy.createBlog({
         title: 'Second blog',
         author: 'The Creator',
         url: 'http://www.example.com',
-        likes: 2             
+        likes: 2
       })
       cy.createBlog({
         title: 'Third blog',
         author: 'The Creator',
         url: 'http://www.example.com',
-        likes: 13   
+        likes: 13
       })
     })
 
-    it('Blogs are sorted by likes most liked first', function() {
+    it('Blogs are sorted by likes most liked first', () =>  {
       cy.contains('First blog, by The Creator').click()
       cy.get('#like-button').click()
       cy.get('#like-button').click()
       cy.visit('http://localhost:3000/blogs')
       cy.contains('Third blog, by The Creator').click()
       cy.get('#like-button').click()
-      
-       
+
       cy.visit('http://localhost:3000/blogs')
       cy.get('#box').then(blogs => {
         console.log('number of blogs', blogs.length)
@@ -149,10 +146,7 @@ describe('Blog app', function() {
         cy.wrap(blogs[0]).contains('First blog, by The Creator')
         cy.wrap(blogs[2]).contains('Third blog, by The Creator')
         cy.wrap(blogs[4]).contains('Second blog, by The Creator')
-
       })
-      
     })
-    
   })
 })
