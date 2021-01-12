@@ -10,7 +10,6 @@ const middleware = require('./utils/middleware')
 
 const mongoUrl = config.MONGODB_URI
 
-console.log('connecting to ')
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true  })
