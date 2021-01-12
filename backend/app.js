@@ -20,10 +20,9 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true  })
     console.log('error connecting to MongoDB', error.message)
   })
 
-const path = require('path')
 app.use(cors())
 app.use(express.json())
-app.use(express.static(path.resolve(__dirname, 'build')))
+app.use(express.static('build'))
 
 app.use(middleware.tokenExtractor)
 app.use('/api/blogs', blogsRouter)
@@ -34,14 +33,7 @@ if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/routerTest')
   app.use('/api/testing', testingRouter)
 }
-app.get('*', (req, res) => {
-  res.sendFile(`${__dirname}/build/index.html`, (err) => {
-    if (err) {
-      res.status(500).send(err)
-    }
-  })
-})
-app.use(middleware.unknownEndpoint)
+
 app.use(middleware.errorHandler)
 
 module.exports = app
