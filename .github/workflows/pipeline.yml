@@ -83,6 +83,7 @@ jobs:
           healthcheck: https://outisa-blogapp.herokuapp.com/health
           checkString: "OK!"
           rollbackonhealthcheckfailed: true
+          appdir: backend
       - uses: actions/checkout@v2
         with:
           fetch-depth: '0'
