@@ -38,7 +38,7 @@ beforeEach(async () => {
     .post('/api/blogs')
     .set('Authorization', `bearer ${loggedInToken}`)
     .send(newBlog)
-  await Promise.all(promiseArray)
+  //await Promise.all(promiseArray)
 })
 
 
