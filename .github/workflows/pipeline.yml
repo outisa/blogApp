@@ -72,7 +72,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Make build
-        run: npm run build:ui  
+        run: cd ../frontend && npm install && cd ../backend && npm install && npm run build:ui  
       - name: heroku deploy
         if: ${{ github.event_name == 'push' }}
         uses: akhileshns/heroku-deploy@v3.8.9 # This is the action
