@@ -28,6 +28,7 @@ beforeEach(async () => {
     })
 
   loggedInToken = response.body.token
+  jest.setTimeout(10000)
 })
 describe('blog format', () => {
   test('blog information is returned as json', async () => {
