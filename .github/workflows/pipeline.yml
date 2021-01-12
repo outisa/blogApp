@@ -60,13 +60,19 @@ jobs:
       env: 
         SECRET: ${{ secrets.SECRET }}
         TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+   
   build:
     name: 'Publish'
     needs: [frontend, backend]
     runs-on: ubuntu-18.04
+    defaults:
+     run:
+       working-directory: backend    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Make build
+        run: npm run build:ui  
       - name: heroku deploy
         if: ${{ github.event_name == 'push' }}
         uses: akhileshns/heroku-deploy@v3.8.9 # This is the action
