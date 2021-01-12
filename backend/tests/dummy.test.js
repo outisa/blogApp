@@ -105,11 +105,9 @@ const mostLikesAuthor = listHelper.mostLikesAuthor
 
 describe('most blogs', () => {
   test('author  with most blogs is returned', () => {
-    console.log(mostBlogs(blogs))
     expect(mostBlogs(blogs)).toEqual({ author: 'Robert C. Martin', blogs: 3 })
   })
   test('author with most likes is returned', () => {
-    console.log(mostLikesAuthor(blogs))
     expect(mostLikesAuthor(blogs)).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
   })
 })

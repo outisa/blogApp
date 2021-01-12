@@ -259,9 +259,7 @@ describe('User related tests', () => {
     expect(result.body.error).toContain('`username` to be unique')
     const usersAtEnd = await helper.usersInDb({})
     expect(usersAtEnd.length).toBe(usersAtStart.length)
-
   })
-
 })
 
 afterAll(() => {
