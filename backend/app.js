@@ -7,7 +7,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
-
+const path = require('path')
 const mongoUrl = config.MONGODB_URI
 
 mongoose.set('useFindAndModify', false)
@@ -33,7 +33,13 @@ if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/routerTest')
   app.use('/api/testing', testingRouter)
 }
+app.use(express.static(path.resolve(__dirname, 'build')))
 
+
+// All remaining requests return the React app, so it can handle routing.
+app.get('*', function(request, response) {
+  response.sendFile(path.resolve(__dirname, 'index.html'))
+})
 app.use(middleware.errorHandler)
 
 module.exports = app
