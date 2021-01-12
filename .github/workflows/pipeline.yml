@@ -1,0 +1,87 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]    
+
+jobs:
+  frontend:
+    runs-on: ubuntu-18.04
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: npm install
+        run: npm install && cd ../backend && npm install && cd ../frontend
+      - name: lint
+        run: npm run eslint
+      - name: build
+        run: npm run build
+      - name: start backend
+        run: cd ../backend && nohup npm run start:test
+        env:
+          SECRET: ${{ secrets.SECRET }}
+          PORT: 3003
+          TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run test:e2e
+          start: npm run 
+          wait-on: http://localhost:3000
+          wait-on-timeout: 300
+  backend:
+    runs-on: ubuntu-18.04
+    defaults:
+     run:
+       working-directory: backend
+       
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - name: npm install
+      run: npm intall
+    - name: lint
+      run: npm run eslint
+    - run: npm run test
+      env: 
+        SECRET: ${{ secrets.SECRET }}
+        TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+  build:
+    name: 'Publish'
+    needs: [frontend, backend]
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: heroku deploy
+        if: ${{ github.event_name == 'push' }}
+        uses: akhileshns/heroku-deploy@v3.8.9 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "outisa-blogapp" #Must be unique in Heroku
+          heroku_email: ${{secrets.EMAIL}}
+          healthcheck: https://outisa-blogapp.herokuapp.com/health
+          checkString: "OK!"
+          rollbackonhealthcheckfailed: true
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message)), '#skip')}}
+        uses: anothrNick/github-tag-action@eca2b69f9e2c24be7decccd0f15fdb1ea590659
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
