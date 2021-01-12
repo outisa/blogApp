@@ -52,14 +52,12 @@ describe('blog format', () => {
 
   test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
-
     expect(response.body.length).toBe(helper.initialBlogs.length +1)
   })
 
   test('blog id is written as id instead of _id', async () => {
     const response = await api.get('/api/blogs')
     const blog = response.body.map(blog => blog.id)
-    console.log(blog)
     expect(blog).toBeDefined()
   })
 })
@@ -150,14 +148,12 @@ describe('deleting a blog', () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart.filter((blog) => blog.title === 'delete this blog')
     const toDelete = blogToDelete[0]
-    console.log(toDelete.id)
     await api
       .delete(`/api/blogs/${toDelete.id}`)
       .set('Authorization', `bearer ${loggedInToken}`)
       .expect(204)
 
     const blogsEnd = await helper.blogsInDb()
-    console.log('täällä')
     expect(blogsEnd.length).toBe(helper.initialBlogs.length)
     const titles = blogsEnd.map(blog => blog.title )
     expect(titles).not.toContain(toDelete.title)
@@ -185,7 +181,6 @@ describe('likes can be updated', () => {
 describe('User related tests', () => {
   test('creation of a user succees', async () => {
     const userAtStart = await helper.usersInDb({})
-    console.log(userAtStart.length)
     const newUser = {
       username: 'maijameija',
       name: 'Maija Meikäläinen',
