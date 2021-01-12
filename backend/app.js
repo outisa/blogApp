@@ -21,7 +21,7 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true })
     console.log('error connecting to MongoDB', error.message)
   })
 
-
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 app.use(express.static('build'))
