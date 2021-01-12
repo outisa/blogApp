@@ -27,7 +27,7 @@ jobs:
       - name: build
         run: npm run build
       - name: start backend
-        run: cd ../backend && nohup npm run start:test
+        run: cd ../backend && nohup npm run start:test &
         env:
           SECRET: ${{ secrets.SECRET }}
           PORT: 3003
