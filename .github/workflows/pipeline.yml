@@ -23,7 +23,7 @@ jobs:
       - name: npm install
         run: npm install && cd ../backend && npm install && cd ../frontend
       - name: lint
-        run: npm run eslint
+        run: npm run lint
       - name: build
         run: npm run build
       - name: start backend
@@ -51,10 +51,11 @@ jobs:
       with:
         node-version: '12.x'
     - name: npm install
-      run: npm intall
+      run: npm install
     - name: lint
       run: npm run eslint
-    - run: npm run test
+    - name: tests 
+      run: npm run test
       env: 
         SECRET: ${{ secrets.SECRET }}
         TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
