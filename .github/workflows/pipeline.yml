@@ -83,6 +83,8 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "outisa-blogapp" #Must be unique in Heroku
           heroku_email: ${{secrets.EMAIL}}
+          healthcheck: https://outisa-blogapp.herokuapp.com/health
+          checkString: "OK!"          
           rollbackonhealthcheckfailed: true
           appdir: backend
       - uses: actions/checkout@v2

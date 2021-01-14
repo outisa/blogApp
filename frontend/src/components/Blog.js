@@ -63,11 +63,12 @@ const Blog = ({ loggedIn }) => {
         <br/>
         <div>
           <input {...content} reset='' />
+          <br />
           <Button variant='info' type="submit" onClick={handleAdd}>add comment</Button>
         </div>
         {blog.comments.length === 0 ?
           <div>
-            <p>no comments yet</p>
+            <p>No comments yet. Be the first to comment this blog.</p>
           </div>:
           <div>
             <ul>
