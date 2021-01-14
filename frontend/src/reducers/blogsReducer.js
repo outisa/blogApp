@@ -21,8 +21,7 @@ export const createBlog = (author, title, url) => {
       title.reset()
       url.reset()
       dispatch(initializeUsers())
-    } catch(exception) {
-      console.log(exception)
+    } catch (exception) {
       const content = ('Validation error! Title and url required.  Title must be at least 1 character long')
       dispatch(setNotification(content, 5, 'error'))
     }
@@ -65,7 +64,6 @@ export const remove = (blogs, blog) => {
         data: blogList
       })
     } catch (exception) {
-      console.log(exception)
       dispatch(setNotification('Blog is already removed or you are not allowed to remove this blog', 5, 'error'))
     }
   }

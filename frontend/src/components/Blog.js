@@ -25,7 +25,6 @@ const Blog = ({ loggedIn }) => {
   }
 
   const handleRemove = () => {
-    console.log(blog)
     const confirmed = window.confirm(`Are you sure, you want to delete ${blog.title} by ${blog.author}`)
     if (confirmed) {
       dispatch(remove(blogs, blog))

@@ -31,7 +31,6 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
       return response.status(401).json( { error: 'token missing or invalid' } )
     }
     const comment = new Comment(request.body)
-    console.log(comment)
     const id = request.params.id
     const blog = await Blog.findById(id)
     comment.blog = blog._id
@@ -42,7 +41,6 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
       .populate('user', { username: 1, name: 1 })
       .populate('comments', { content: 1 })
 
-    console.log(savedBlog)
     return response.status(201).json(savedBlog)
   }
   response.status(401).send({ error: 'not signed in' })
@@ -85,7 +83,6 @@ blogsRouter.delete('/:id', async (request, response, next) => {
       return response.status(401).json( { error: 'token missing or invalid' } )
     }
     const blog = await Blog.findById(request.params.id)
-    console.log(blog)
     if (blog === null) {
       return response.status(404).send({ error: 'blog already deleted' })
     }

@@ -3,3 +3,6 @@ This application is made as a part of Fullstack course for part 11. Both backend
 
 #### The application at Heroku:
 [blogApp](https://outisa-blogapp.herokuapp.com/)
+
+#### Pokedex GitHub repository (part 11)
+https://github.com/outisa/full-stack-open-pokedex

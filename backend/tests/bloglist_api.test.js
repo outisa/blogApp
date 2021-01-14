@@ -41,7 +41,6 @@ describe('blog format', () => {
 
   test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
-    console.log(response.body)
     expect(response.body.length).toBe(helper.initialBlogs.length)
   })
 
