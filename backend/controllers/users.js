@@ -5,9 +5,7 @@ const User = require('../models/user')
 
 usersRouter.get('/:id', async (request, response) => {
   const id = request.params.id
-  console.log(id)
   const user = await User.findOne({ _id: id }).populate('blogs', { title: 1, author: 1, url: 1 })
-  console.log(user)
   if (user) {
     response.json(user.toJSON())
   }

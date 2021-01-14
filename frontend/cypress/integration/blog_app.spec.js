@@ -141,8 +141,6 @@ describe('Blog app', function() {
 
       cy.visit('http://localhost:3000/blogs')
       cy.get('#box').then(blogs => {
-        console.log('number of blogs', blogs.length)
-        console.log(blogs)
         cy.wrap(blogs[0]).contains('First blog, by The Creator')
         cy.wrap(blogs[2]).contains('Third blog, by The Creator')
         cy.wrap(blogs[4]).contains('Second blog, by The Creator')

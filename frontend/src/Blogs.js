@@ -5,7 +5,6 @@ import './index.css'
 
 const Blogs = () => {
   const blogs = useSelector(state => state.blogs)
-  console.log(blogs.length)
   if (blogs.length === 0) {
     return null
   }

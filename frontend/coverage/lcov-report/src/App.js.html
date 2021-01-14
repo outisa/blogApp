@@ -454,10 +454,8 @@ function App() {
     blogService
       .getAll()
       .then(initialBlogs =&gt; {
-        console.log('promise fulfilled')
         initialBlogs.sort((a, b) =&gt; b.likes - a.likes)
         setBlogs(initialBlogs)
-        console.log(initialBlogs)
       })
   }, [])
 &nbsp;
