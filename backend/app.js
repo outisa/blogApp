@@ -24,6 +24,10 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
 
+app.get('/health', (req, res) => {
+  res.send('OK!')
+})
+
 app.use(middleware.tokenExtractor)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
@@ -33,12 +37,9 @@ if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/routerTest')
   app.use('/api/testing', testingRouter)
 }
-app.use(express.static('backend/build'))
 
-
-// All remaining requests return the React app, so it can handle routing.
 app.get('*', function(request, response) {
-  response.sendFile(path.resolve(__dirname, 'backend', 'build', 'index.html'))
+  response.sendFile(path.resolve(__dirname, 'build', 'index.html'))
 })
 app.use(middleware.errorHandler)
 
